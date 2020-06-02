@@ -1,8 +1,12 @@
 import requests
 from bs4 import BeautifulSoup
+from fake_useragent import UserAgent
 
 def get_new_block(url,k):
-    site = requests.get(url)
+    
+    
+    site = requests.get(url,headers={'User-Agent': UserAgent().chrome})
+    
     bs = BeautifulSoup(site.text,"html.parser")
     needed = bs.findAll("div",class_="description item_table-description")
     
