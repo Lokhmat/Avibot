@@ -23,7 +23,8 @@ class BotHandler:
     def send_message(self, chat_id, text):
         params = {'chat_id': chat_id, 'text': text}
         method = 'sendMessage'
-        resp = requests.post(self.api_url + method, params)
+        proxies = {'https': '-/-'}
+        resp = requests.post(self.api_url + method, params, proxies=proxies)
         return resp
 
     def get_last_update(self):
@@ -58,16 +59,19 @@ def main():
     hour = now.hour
 
     while True:
-        
+        print(1)
         
         for i in range(len(LINKS)):
             if len(LAST_LL[i])>=10000:
                 LAST_LL[i]=[]
-            
+            print(2)
             if i != 1:
               k = 4
-              curr = get_new_block(LINKS[i],k)
-              time.sleep(20)
+              try:
+                curr = get_new_block(LINKS[i],k)
+                time.sleep(20)
+              except:
+                continue
               for j in range(len(curr)):
                 if curr[j] not in LAST_LL[i]:
                     LAST_LL[i].append(curr[j])
@@ -78,9 +82,11 @@ def main():
                             s = s + str(e)[1:-1] + '\n'
                         greet_bot.send_message(user,s)
             else:
-              curr = get_new_block(LINKS[i],0)
-              time.sleep(20)
-          
+              try:  
+                curr = get_new_block(LINKS[i],0)
+                time.sleep(20)
+              except:
+                continue
               if curr not in LAST_LL:
                   LAST_LL[i]=curr
                   for user in USERS:
