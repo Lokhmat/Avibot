@@ -1,5 +1,5 @@
 
-from another import get_new_block
+from parse import get_new_block
 import requests  
 import datetime
 import time
